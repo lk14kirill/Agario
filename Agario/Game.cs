@@ -10,10 +10,15 @@ namespace Agario
         public double time;
         private int[] score = new int[2];
         private int[] scoreForText = new int[2];
+        private static bool isGameEnded = false;
+        public bool IsGameEnded() => isGameEnded;
+        public static void GameEnded(bool s) => isGameEnded = s;
 
         private FoodList foodList = new FoodList();
         private ObjectsToDrawList objectsToDraw = new ObjectsToDrawList();
+        private BotList botlist = new BotList();
         private Clock clock = new Clock();
+        private Controller controller = new Controller();
         private RenderWindow window = new RenderWindow(new VideoMode(Constants.windowX, Constants.windowY), "Game window");
         private Player player = new Player();
 
@@ -22,17 +27,18 @@ namespace Agario
         public void GameCycle()
         {
             Init();
-            while (window.IsOpen && score[0] != 10 && score[1] != 10)
+            while (window.IsOpen && !isGameEnded)
             {
                 Cycle();
             }
         }
         private void Init()
         {
-            foodList.Create(100);
             WindowSetup();
             AddAllDrawableObjectsToList();
             objectsToDraw.Init();
+            botlist.Create(7);
+            foodList.Create(100);
         }
         private void Cycle()
         {
@@ -42,10 +48,15 @@ namespace Agario
 
             window.Clear(Color.White);
             window.DispatchEvents();
-            Controller.EatFoodAndRemove(player, foodList);
-            Controller.IntersectBetweenPlayers(player, bot);
-            player.MoveToward(direction, window.Size, (float)time);
 
+            controller.EatFoodAndRemove(player, foodList);
+            controller.EatFoodAndRemove(botlist, foodList);
+
+            controller.IntersectBetweenBots(botlist);
+            controller.IntersectBetweenPlayers(player, botlist);
+
+            player.MoveToward(direction, (float)time);
+            botlist.MoveBotsToFood(foodList, (float)time);
 
             DrawObjects();
             window.Display();
@@ -53,8 +64,7 @@ namespace Agario
         private void AddAllDrawableObjectsToList()
         {
             objectsToDraw.Add(player.GetGO());
-            objectsToDraw.AddItemList(foodList.food);
-            objectsToDraw.Add(bot.GetGO());
+
         }
         private void DrawObjects()
         {

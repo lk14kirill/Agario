@@ -6,14 +6,6 @@ namespace Agario
 {
     public class Player : CircleObject
     {
-        private bool isAlive = true;
-        public bool IsAlive() => isAlive;
-        public void SetBoolAlive(bool s)
-        {
-            isAlive = s;
-            if (!isAlive)
-                Destroy();
-        }
         public Player()
         {
             gameObject.Radius = 10;
@@ -30,9 +22,5 @@ namespace Agario
             SetSpeed(GetSpeed() - MathExt.GetPercentOf(GetSpeed(), 1));
         }
         
-    }
-    public class Bot : Player
-    {
-
     }
 }

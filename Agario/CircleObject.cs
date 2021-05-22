@@ -37,7 +37,7 @@ namespace Agario
             gameObject.FillColor = color;
         }
         public void Destroy() => this.Destroy();
-        public void MoveToward(Vector2f direction, Vector2u window, float time)
+        public void MoveToward(Vector2f direction, float time)
         {
             if (direction != new Vector2f(0, 0) && GetCanMove())
             {
