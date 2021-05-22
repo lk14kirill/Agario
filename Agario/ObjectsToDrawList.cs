@@ -8,14 +8,14 @@ namespace Agario
         private List<Drawable> objectsToDraw = new List<Drawable>();
         public void Init()
         {
-            Constants.createDelegate += AddFood;
-            Constants.removeDelegate += RemoveFood;
+            Constants.CircleCreated += AddCircle;
+            Constants.CircleRemoved += Remove;
         }
-        public void AddFood(CircleObject circle)
+        public void AddCircle(CircleObject circle)
         {
             objectsToDraw.Add(circle.GetGO());
         }
-        public void RemoveFood(CircleObject circle)
+        public void Remove(CircleObject circle)
         {
             objectsToDraw.Remove(circle.GetGO());
         }

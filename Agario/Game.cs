@@ -8,8 +8,6 @@ namespace Agario
     class Game
     {
         public double time;
-        private int[] score = new int[2];
-        private int[] scoreForText = new int[2];
         private static bool isGameEnded = false;
         public bool IsGameEnded() => isGameEnded;
         public static void GameEnded(bool s) => isGameEnded = s;
@@ -23,7 +21,6 @@ namespace Agario
         private Player player = new Player();
 
         private Vector2f direction;
-        private Bot bot = new Bot();
         public void GameCycle()
         {
             Init();
@@ -36,7 +33,10 @@ namespace Agario
         {
             WindowSetup();
             AddAllDrawableObjectsToList();
+            player.gameObject.OutlineColor = Color.Red;
             objectsToDraw.Init();
+            foodList.Init();
+            botlist.Init();
             botlist.Create(7);
             foodList.Create(100);
         }
@@ -49,8 +49,8 @@ namespace Agario
             window.Clear(Color.White);
             window.DispatchEvents();
 
-            controller.EatFoodAndRemove(player, foodList);
-            controller.EatFoodAndRemove(botlist, foodList);
+            controller.TryEatFood(player, foodList);
+            controller.TryEatFood(botlist, foodList);
 
             controller.IntersectBetweenBots(botlist);
             controller.IntersectBetweenPlayers(player, botlist);

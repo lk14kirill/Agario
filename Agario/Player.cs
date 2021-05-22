@@ -11,6 +11,8 @@ namespace Agario
             gameObject.Radius = 10;
             SetRandomColor();
             SetSpeed(0.25f);
+            gameObject.OutlineThickness = 1;
+            gameObject.OutlineColor = Color.Black;
         }
         public void GoToStartPoint(Vector2u window)
         {
