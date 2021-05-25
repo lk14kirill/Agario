@@ -12,6 +12,5 @@ namespace Agario
             SetRandomColor();
             SetRadius(5);
         }
-       
     }
 }

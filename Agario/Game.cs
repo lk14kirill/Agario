@@ -2,6 +2,7 @@
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
+using System.Collections.Generic;
 
 namespace Agario
 {
@@ -24,7 +25,7 @@ namespace Agario
         public void GameCycle()
         {
             Init();
-            while (window.IsOpen && !isGameEnded)
+            while (window.IsOpen && !player.IsEaten())
             {
                 Cycle();
             }
@@ -38,7 +39,7 @@ namespace Agario
             foodList.Init();
             botlist.Init();
             botlist.Create(7);
-            foodList.Create(100);
+            foodList.Create(150);
         }
         private void Cycle()
         {
@@ -49,18 +50,25 @@ namespace Agario
             window.Clear(Color.White);
             window.DispatchEvents();
 
-            controller.TryEatFood(player, foodList);
-            controller.TryEatFood(botlist, foodList);
-
+            controller.IntersectBetweenPlayerAndBots(player, botlist);
             controller.IntersectBetweenBots(botlist);
-            controller.IntersectBetweenPlayers(player, botlist);
+
+            botlist.LoseWeight();
+            player.LoseWeightAndChangeSpeed();
+
+            Console.WriteLine(player.GetSpeed());
+            player.TryEatFood(foodList);
+            botlist.TryEatFood(foodList);
 
             player.MoveToward(direction, (float)time);
             botlist.MoveBotsToFood(foodList, (float)time);
 
+            botlist.RemoveCachedBots();
+
             DrawObjects();
             window.Display();
         }
+      
         private void AddAllDrawableObjectsToList()
         {
             objectsToDraw.Add(player.GetGO());
