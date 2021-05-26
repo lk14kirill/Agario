@@ -13,7 +13,6 @@ namespace Agario
         {
             gameObject.Radius = 10;
             SetRandomColor();
-            SetSpeed(0.25f);
             gameObject.OutlineThickness = 1;
             gameObject.OutlineColor = Color.Black;
         }
@@ -29,9 +28,7 @@ namespace Agario
         {
             foreach (Food food in foodList.food)
             {
-                double distanceBetweenRadiuses = MathExt.VectorLength(food.GetCenter(), this.GetCenter());
-
-                if (distanceBetweenRadiuses <= this.GetRadius() + food.GetRadius())
+                if (MathExt.CheckForIntersect(this, food))
                 {
                     foodList.RemoveFood(food);
                     if(GetRadius() <400)

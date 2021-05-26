@@ -56,7 +56,6 @@ namespace Agario
             botlist.LoseWeight();
             player.LoseWeightAndChangeSpeed();
 
-            Console.WriteLine(player.GetSpeed());
             player.TryEatFood(foodList);
             botlist.TryEatFood(foodList);
 
