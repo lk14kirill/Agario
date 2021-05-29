@@ -24,7 +24,7 @@ namespace Agario
         public void Create()
         {
             Player newBot = new Player();
-            newBot.BotInit();
+            newBot.Init();
             bots.Add(newBot);
             Constants.CircleCreated.Invoke(newBot);
         }
@@ -33,7 +33,7 @@ namespace Agario
             for (int i = 0; i < quantity; i++)
             {
                 Player newBot = new Player();
-                newBot.BotInit();
+                newBot.Init();
                 bots.Add(newBot);
                 if (Constants.CircleCreated != null)
                     Constants.CircleCreated.Invoke(newBot);
@@ -51,7 +51,7 @@ namespace Agario
         {
             foreach(Player bot in bots)
             {
-                bot.MoveToFood(foodlist,time);
+                bot.MoveToFood(foodlist,time,this);
             }
         }
         public void TryEatFood(FoodList foodList)
@@ -66,6 +66,14 @@ namespace Agario
             foreach(Player player in bots)
             {
                 player.LoseWeightAndChangeSpeed();
+            }
+        }
+        public void IntersectBetweenBots(BotList bots)
+        {
+            Player player = new Player();
+            foreach (Player bot in bots.bots)
+            {
+                player.Intersect(bot, bots);
             }
         }
     }

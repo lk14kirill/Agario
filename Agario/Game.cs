@@ -17,7 +17,6 @@ namespace Agario
         private ObjectsToDrawList objectsToDraw = new ObjectsToDrawList();
         private BotList botlist = new BotList();
         private Clock clock = new Clock();
-        private Controller controller = new Controller();
         private RenderWindow window = new RenderWindow(new VideoMode(Constants.windowX, Constants.windowY), "Game window");
         private Player player = new Player();
 
@@ -27,7 +26,7 @@ namespace Agario
             Init();
             while (window.IsOpen && !player.IsEaten())
             {
-                Cycle();
+                DoCycleStep();
             }
         }
         private void Init()
@@ -36,12 +35,13 @@ namespace Agario
             AddAllDrawableObjectsToList();
             player.gameObject.OutlineColor = Color.Red;
             objectsToDraw.Init();
+            player.Init();
             foodList.Init();
             botlist.Init();
             botlist.Create(7);
             foodList.Create(150);
         }
-        private void Cycle()
+        private void DoCycleStep()
         {
             time = clock.ElapsedTime.AsMicroseconds();
             clock.Restart();
@@ -50,9 +50,10 @@ namespace Agario
             window.Clear(Color.White);
             window.DispatchEvents();
 
-            controller.IntersectBetweenPlayerAndBots(player, botlist);
-            controller.IntersectBetweenBots(botlist);
 
+            player.Intersect(player, botlist);
+            botlist.IntersectBetweenBots(botlist);
+        
             botlist.LoseWeight();
             player.LoseWeightAndChangeSpeed();
 
@@ -84,7 +85,6 @@ namespace Agario
         {
             window.MouseMoved += OnMouseMoved;
             window.Closed += WindowClosed;
-            //window.SetMouseCursorVisible(false);
         }
         public void OnMouseMoved(object sender, MouseMoveEventArgs e)
         {
