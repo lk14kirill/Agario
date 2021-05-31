@@ -48,7 +48,7 @@ namespace Agario
         {
             if (GetRadius() > 10 && weightModifier != 0)
             {
-                SetRadius(GetRadius() - GetRadius() * weightModifier);
+                SetRadius(GetRadius() - GetRadius() * 0.00023f * weightModifier);
             }
             SetSpeed(8 / (GetRadius() * 1.2f) * speedModifier);
         }

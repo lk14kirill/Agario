@@ -8,7 +8,7 @@
         }
         public virtual float GetWeightModifier()
         {
-            return 0.000025f;
+            return 1f;
         }
         public virtual void Init(Player player)
         {

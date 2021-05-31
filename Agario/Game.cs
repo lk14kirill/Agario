@@ -9,7 +9,11 @@ namespace Agario
   
     class Game
         {
-            public double time;
+            private double time;
+            private float totalTimeBeforeUpdate = 0f;
+            private float previousTimeElapsed = 0f;
+            private float deltaTime = 0f;
+            private  float totalTimeElapsed = 0f;
             private static bool isGameEnded = false;
             public bool IsGameEnded() => isGameEnded;
             public static void GameEnded(bool s) => isGameEnded = s;
@@ -40,21 +44,32 @@ namespace Agario
                 InitializeLists();
             }
             private void DoCycleStep()
-            {  
-                time = clock.ElapsedTime.AsMicroseconds();
-                clock.Restart();
-                time /= 800;                                              //for smoother movement of ball
+            {
 
-                window.Clear(Color.White);
-                window.DispatchEvents();
+           
+                totalTimeElapsed = clock.ElapsedTime.AsSeconds();
+                deltaTime = totalTimeElapsed - previousTimeElapsed;
+                previousTimeElapsed = totalTimeElapsed;
 
-                player.Update(direction, bots, food, (float)time);
-                bots.UpdateBots(direction, food, bots, (float)time);
+                totalTimeBeforeUpdate += deltaTime;
+               if(totalTimeBeforeUpdate >= Constants.TIME_UNTIL_UPDATE)
+               {
+                 time = clock.ElapsedTime.AsMicroseconds();
+                 clock.Restart();
+                 time /= 800;                                              //for smoother movement of ball
+
+                 window.Clear(Color.White);
+                 window.DispatchEvents();
  
-                bots.RemoveCachedBots();
+                 player.Update(direction, bots, food, (float)time);
+                 bots.UpdateBots(direction, food, bots, (float)time);
 
-                drawableObjects.Draw(window);
-                window.Display();
+                 bots.RemoveCachedBots();
+
+                 drawableObjects.Draw(window);
+                 window.Display();
+               }
+              
             }
             private void OnKeyChangePlayer(object sender, KeyEventArgs e)
             {

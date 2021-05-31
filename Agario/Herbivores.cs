@@ -8,12 +8,9 @@ namespace Agario
         {
             player.GetGO().OutlineColor = Color.Green;
         }
-        float speedModifier = 1.2f;
+        float weightModifier=1.2f,speedModifier = 1.2f;
         public override float GetSpeedModifier() => speedModifier;
-        public override float GetWeightModifier()
-        {
-            return 0.00002f;
-        }
+        public override float GetWeightModifier() => weightModifier;
         public override void TryEatFood(Player player, FoodList foodList)
         {
             base.TryEatFood(player, foodList);
