@@ -2,9 +2,13 @@
 {
     public class Fraction
     {
-        public virtual float GetModifier()
+        public virtual float GetSpeedModifier()
         {
             return 1;
+        }
+        public virtual float GetWeightModifier()
+        {
+            return 0.000025f;
         }
         public virtual void Init(Player player)
         {
@@ -19,7 +23,7 @@
         }
         public virtual void Intersect(Player player, BotList bots)
         {
-            foreach (Player bot in bots.bots)
+            foreach (Player bot in bots.GetBots())
             {
                 if (player == bot)
                     return;

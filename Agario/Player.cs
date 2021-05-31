@@ -5,15 +5,17 @@ using System;
 
 namespace Agario
 {
+    public interface IUpdatable
+    {
+        void Update();
+    }
     public class Player : CircleObject
     {
         private bool isEaten;
         private float speedModifier = 1;
+        private float weightModifier = 0.000025f;
         private Fraction fraction;
-        public void SetFractionOmniVores() => fraction = new Omnivores();
-        public Fraction GetFraction() => fraction;
-        public bool IsEaten() => isEaten;
-        public void SetIsEaten(bool s) => isEaten = s;
+        private bool isPlayer = false;
         public Player()
         {
             gameObject.Radius = 10;
@@ -21,7 +23,12 @@ namespace Agario
             gameObject.OutlineThickness =3;
             fraction = RandomFraction();
             SetRandomPosition(new Vector2f(Constants.windowX, Constants.windowY));
-        }
+        } 
+        public bool IsPlayer() => isPlayer;
+        public void SetIsPlayer(bool s) => isPlayer = s;
+        public Fraction GetFraction() => fraction;
+        public bool IsEaten() => isEaten;
+        public void SetIsEaten(bool s) => isEaten = s;
         private Fraction RandomFraction()
         {
             Random rand = new Random();
@@ -39,16 +46,25 @@ namespace Agario
 
         public void LoseWeightAndChangeSpeed()
         {
-            if (GetRadius() > 10)
+            if (GetRadius() > 10 && weightModifier != 0)
             {
-                SetRadius(GetRadius() - GetRadius() * 0.000025f);
+                SetRadius(GetRadius() - GetRadius() * weightModifier);
             }
             SetSpeed(8 / (GetRadius() * 1.2f) * speedModifier);
         }
-     
-        public void Intersect(Player player,BotList bots)
+        public void Update(Vector2f playerDirection,BotList bots,FoodList food,float time)
         {
-            fraction.Intersect(player,bots);
+            if (IsPlayer())
+                MoveToward(playerDirection, time);
+            else
+                MoveToFood(food,time,bots);
+            Intersect(bots);
+            LoseWeightAndChangeSpeed();
+            TryEatFood(food);
+        }
+        public void Intersect(BotList bots)
+        {
+            fraction.Intersect(this,bots);
         }
         public void Eat(CircleObject circle)
         {
@@ -57,7 +73,8 @@ namespace Agario
         public void Init()
         {
             fraction.Init(this);
-            speedModifier = fraction.GetModifier();
+            speedModifier = fraction.GetSpeedModifier();
+            weightModifier = fraction.GetWeightModifier();
         }
         public void TryEatFood(FoodList foodlist)
         {
@@ -65,6 +82,7 @@ namespace Agario
         }
         public void MoveToFood(FoodList foodlist, float time, BotList botlist)
         {
+            if(!IsPlayer())
             fraction.MoveToFood(this, foodlist, time, botlist);
         }
     }

@@ -12,9 +12,9 @@ namespace Agario
         {
             base.TryEatFood(player, foodList);
         }
-        public override float GetModifier()
+        public override float GetSpeedModifier()
         {
-            return base.GetModifier();
+            return base.GetSpeedModifier();
         }
         public override void MoveToFood(Player player, FoodList foodList, float time, BotList botlist)
         {

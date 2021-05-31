@@ -9,7 +9,11 @@ namespace Agario
             player.GetGO().OutlineColor = Color.Green;
         }
         float speedModifier = 1.2f;
-        public override float GetModifier() => speedModifier;
+        public override float GetSpeedModifier() => speedModifier;
+        public override float GetWeightModifier()
+        {
+            return 0.00002f;
+        }
         public override void TryEatFood(Player player, FoodList foodList)
         {
             base.TryEatFood(player, foodList);
@@ -26,7 +30,7 @@ namespace Agario
         }
         public override void Intersect(Player player, BotList bots)
         {
-            foreach (Player bot in bots.bots)
+            foreach (Player bot in bots.GetBots())
             {
                 if (player == bot)
                     return;

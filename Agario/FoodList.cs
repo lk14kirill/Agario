@@ -11,6 +11,10 @@ namespace Agario
         {
             onRemoved += Create;
         }
+        public void Unsubscribe()
+        {
+            onRemoved -= Create;
+        }
         public void Create()
         {
             Food newFood = new Food();

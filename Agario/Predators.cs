@@ -13,7 +13,7 @@ namespace Agario
         {
             Player target = new Player();
             float minDistance = 5000;
-            foreach (Player bot in botlist.bots)
+            foreach (Player bot in botlist.GetBots())
             {
                 if (player == bot )
                     continue;
@@ -35,7 +35,7 @@ namespace Agario
         }
         public override void Intersect(Player player, BotList bots)
         {
-            foreach (Player bot in bots.bots)
+            foreach (Player bot in bots.GetBots())
             {
                 if (player == bot)
                     return;
@@ -56,9 +56,9 @@ namespace Agario
                 return;
             base.EatAndRemoveBot(whoIsEating, whoWasEaten, bots);
         }
-        public override float GetModifier()
+        public override float GetSpeedModifier()
         {
-            return base.GetModifier();
+            return base.GetSpeedModifier();
         }
     }
 }
