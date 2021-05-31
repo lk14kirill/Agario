@@ -1,16 +1,14 @@
 ﻿using SFML.System;
 using SFML.Graphics;
 using System;
+using System.Collections.Generic;
 
 
 namespace Agario
 {
-    public interface IUpdatable
+    public class Player : CircleObject,IUpdatable 
     {
-        void Update();
-    }
-    public class Player : CircleObject
-    {
+        public int id;
         private bool isEaten;
         private float speedModifier = 1;
         private float weightModifier = 0.000025f;
@@ -52,7 +50,7 @@ namespace Agario
             }
             SetSpeed(8 / (GetRadius() * 1.2f) * speedModifier);
         }
-        public void Update(Vector2f playerDirection,BotList bots,FoodList food,float time)
+        public void Update(Vector2f playerDirection,List<Player> bots,FoodList food,float time)
         {
             if (IsPlayer())
                 MoveToward(playerDirection, time);
@@ -62,7 +60,7 @@ namespace Agario
             LoseWeightAndChangeSpeed();
             TryEatFood(food);
         }
-        public void Intersect(BotList bots)
+        public void Intersect(List<Player> bots)
         {
             fraction.Intersect(this,bots);
         }
@@ -80,10 +78,10 @@ namespace Agario
         {
             fraction.TryEatFood(this, foodlist);
         }
-        public void MoveToFood(FoodList foodlist, float time, BotList botlist)
+        public void MoveToFood(FoodList foodlist, float time, List<Player> bots)
         {
             if(!IsPlayer())
-            fraction.MoveToFood(this, foodlist, time, botlist);
+            fraction.MoveToFood(this, foodlist, time, bots);
         }
     }
 }

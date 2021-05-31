@@ -1,4 +1,5 @@
-﻿namespace Agario
+﻿using System.Collections.Generic;
+namespace Agario
 {
     public class Fraction
     {
@@ -14,16 +15,16 @@
         {
 
         } 
-        public virtual void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten, BotList bots)
+        public virtual void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
             whoIsEating.Eat(whoWasEaten);
             whoWasEaten.SetIsEaten(true);
-            bots.AddToBotsToRemove(whoWasEaten);
+            UpdatableObjects.AddToBotsToRemove(whoWasEaten);
 
         }
-        public virtual void Intersect(Player player, BotList bots)
+        public virtual void Intersect(Player player, List<Player> bots)
         {
-            foreach (Player bot in bots.GetBots())
+            foreach (Player bot in bots)
             {
                 if (player == bot)
                     return;
@@ -31,10 +32,10 @@
                 if (MathExt.CheckForIntersect(player, bot))
                 {
                     if (player.GetRadius() > bot.GetRadius() + MathExt.GetPercentOf(bot.GetRadius(), 10))
-                        EatAndRemoveBot(player, bot, bots);
+                        EatAndRemoveBot(player, bot);
 
                     if (player.GetRadius() + MathExt.GetPercentOf(player.GetRadius(), 10) < bot.GetRadius())
-                        EatAndRemoveBot(bot, player, bots);
+                        EatAndRemoveBot(bot, player);
                 }
             }
         }
@@ -51,7 +52,7 @@
                 }
             }
         } 
-        public virtual void MoveToFood(Player player, FoodList foodList, float time,BotList botlist)
+        public virtual void MoveToFood(Player player, FoodList foodList, float time,List<Player> bots)
         {
             Food target = new Food();
             float minDistance = 5000;

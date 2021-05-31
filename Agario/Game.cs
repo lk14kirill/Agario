@@ -20,17 +20,17 @@ namespace Agario
 
             private FoodList food = new FoodList();
             private ObjectsToDrawList drawableObjects = new ObjectsToDrawList();
-            private BotList bots = new BotList();
+            private UpdatableObjects updatableObjects = new UpdatableObjects();
             private Clock clock = new Clock();
             private Controller controller = new Controller();
             private RenderWindow window = new RenderWindow(new VideoMode(Constants.windowX, Constants.windowY), "Game window");
-            private Player player = new Player();
+            //private Player player = new Player();
 
             private Vector2f direction;
             public void GameCycle()
             {
                 Init();
-                while (window.IsOpen && !player.IsEaten())
+                while (window.IsOpen && !updatableObjects.GetPlayer().IsEaten())
                 {
                     DoCycleStep();
                 }
@@ -38,9 +38,8 @@ namespace Agario
             private void Init()
             {
                 WindowSetup();
-                AddAllDrawableObjectsToList();
-                player.Init();
-                player.SetIsPlayer(true);
+               // player.Init();
+               //player.SetIsPlayer(true);
                 InitializeLists();
             }
             private void DoCycleStep()
@@ -60,11 +59,11 @@ namespace Agario
 
                  window.Clear(Color.White);
                  window.DispatchEvents();
- 
-                 player.Update(direction, bots, food, (float)time);
-                 bots.UpdateBots(direction, food, bots, (float)time);
 
-                 bots.RemoveCachedBots();
+               //  player.Update(direction, updatableObjects.GetBots(), food, (float)time);
+                 updatableObjects.UpdateBots(direction, food, updatableObjects.GetBots(), (float)time);
+
+                 updatableObjects.RemoveCachedBots();
 
                  drawableObjects.Draw(window);
                  window.Display();
@@ -74,19 +73,16 @@ namespace Agario
             private void OnKeyChangePlayer(object sender, KeyEventArgs e)
             {
                 if (e.Code == Keyboard.Key.F)
-                    player = controller.ChangePlayerAndReplaceBots(player, bots);
-            }
-            private void AddAllDrawableObjectsToList()
-            {
-                drawableObjects.Add(player.GetGO());
+                    controller.ChangePlayerAndReplaceBots(updatableObjects);
             }
             private void InitializeLists()
             {
                drawableObjects.Init();
-               bots.Init();
+               updatableObjects.Init();
                food.Init();
-               bots.Create(9);
                food.Create(150);
+               updatableObjects.CreateBots(3);
+            updatableObjects.CreatePlayer();
             }
             private void WindowSetup()
             {
@@ -108,7 +104,7 @@ namespace Agario
             {
                 RenderWindow w = (RenderWindow)sender;
                 WindowUnsubscribe();
-                bots.Unsubscribe();
+                updatableObjects.Unsubscribe();
                 food.Unsubscribe();
                 drawableObjects.Unsubscribe();
                 w.Close();

@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using System.Collections.Generic;
 
 namespace Agario
 {
@@ -15,19 +16,19 @@ namespace Agario
         {
             base.TryEatFood(player, foodList);
         }
-        public override void MoveToFood(Player player, FoodList foodList, float time, BotList botlist)
+        public override void MoveToFood(Player player, FoodList foodList, float time, List<Player> botlist)
         {
             base.MoveToFood(player, foodList, time, botlist);
         }
-        public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten, BotList bots)
+        public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
             if (whoIsEating.GetFraction() is Herbivores)
                 return;
-            base.EatAndRemoveBot(whoIsEating,whoWasEaten,bots);
+            base.EatAndRemoveBot(whoIsEating,whoWasEaten);
         }
-        public override void Intersect(Player player, BotList bots)
+        public override void Intersect(Player player, List<Player> bots)
         {
-            foreach (Player bot in bots.GetBots())
+            foreach (Player bot in bots)
             {
                 if (player == bot)
                     return;
@@ -35,7 +36,7 @@ namespace Agario
                 if (MathExt.CheckForIntersect(player, bot))
                 {
                     if (player.GetRadius() + MathExt.GetPercentOf(player.GetRadius(), 10) < bot.GetRadius())
-                        EatAndRemoveBot(bot, player, bots);
+                        EatAndRemoveBot(bot, player);
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using System.Collections.Generic;
 
 namespace Agario
 {
@@ -9,11 +10,11 @@ namespace Agario
             player.GetGO().OutlineColor = Color.Red;
             player.SetRadius(50);
         }
-        public override void MoveToFood(Player player, FoodList foodList, float time, BotList botlist)
+        public override void MoveToFood(Player player, FoodList foodList, float time,List<Player> bots)
         {
             Player target = new Player();
             float minDistance = 5000;
-            foreach (Player bot in botlist.GetBots())
+            foreach (Player bot in bots)
             {
                 if (player == bot )
                     continue;
@@ -33,9 +34,9 @@ namespace Agario
         {
 
         }
-        public override void Intersect(Player player, BotList bots)
+        public override void Intersect(Player player, List<Player> bots)
         {
-            foreach (Player bot in bots.GetBots())
+            foreach (Player bot in bots)
             {
                 if (player == bot)
                     return;
@@ -43,18 +44,18 @@ namespace Agario
                 if (MathExt.CheckForIntersect(player, bot))
                 {
                     if (player.GetRadius() > bot.GetRadius() + MathExt.GetPercentOf(bot.GetRadius(), 10))
-                        EatAndRemoveBot(player, bot, bots);
+                        EatAndRemoveBot(player, bot);
 
                     if (player.GetRadius() + MathExt.GetPercentOf(player.GetRadius(), 10) < bot.GetRadius())
-                        EatAndRemoveBot(bot, player, bots);
+                        EatAndRemoveBot(bot, player);
                 }
             }
         }
-        public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten, BotList bots)
+        public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
             if (whoIsEating.GetFraction() is Herbivores)
                 return;
-            base.EatAndRemoveBot(whoIsEating, whoWasEaten, bots);
+            base.EatAndRemoveBot(whoIsEating, whoWasEaten);
         }
         public override float GetSpeedModifier()
         {
