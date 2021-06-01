@@ -6,29 +6,50 @@ namespace Agario
     public class UpdatableObjects
     {
         public List<IUpdatable> updatableObjects = new List<IUpdatable>();
-        private delegate void OnRemoved();
-        private OnRemoved onRemoved;
+         public List<IUpdatable> GetList() => updatableObjects;
         public List<Player> GetBots()
         {
             List<Player> bots = new List<Player>();
-            foreach (Player bot in updatableObjects)
+            foreach (IUpdatable updatable in updatableObjects)
             {
-                if (!bot.IsPlayer())
+                if(updatable is Player)
                 {
-                    bots.Add(bot);
-                } 
+                    Player player = (Player)updatable;
+                    if (!player.IsPlayer())
+                    {
+                        bots.Add(player);
+                    }
+                }
+                
             }
             return bots;
         }
-        public List<IUpdatable> GetList() => updatableObjects;
+        public List<Food> GetFood()
+        {
+            List<Food> foodList = new List<Food>();
+            foreach (IUpdatable updatable in updatableObjects)
+            {
+                if (updatable is Food)
+                {
+                    Food food = (Food)updatable;
+                        foodList.Add(food);
+                }
+            }
+            return foodList;
+        }
         public Player GetPlayer()
         {
             Player player = null;
-            foreach (Player pl in updatableObjects)
+            foreach (IUpdatable pl in updatableObjects)
             {
-                if (pl.IsPlayer())
+
+                if (pl is Player)
                 {
-                    player =  pl;
+                    Player tempPlayer = pl as Player;
+                    if (tempPlayer.IsPlayer())
+                    {
+                      player = tempPlayer;
+                    }
                 }
             }
             return player;
@@ -40,10 +61,8 @@ namespace Agario
         public void Remove(IUpdatable updatable)
         {
             updatableObjects.Remove(updatable);
-            if (onRemoved != null)
-                onRemoved.Invoke();
         }
-        public void Update(Vector2f direction, FoodList food, List<Player> bots, float time)
+        public void Update(Vector2f direction, List<Food> food, List<Player> bots, float time)
         {
             foreach (IUpdatable updatable in updatableObjects)
             {

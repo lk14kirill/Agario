@@ -12,11 +12,11 @@ namespace Agario
         float weightModifier=1.2f,speedModifier = 1.2f;
         public override float GetSpeedModifier() => speedModifier;
         public override float GetWeightModifier() => weightModifier;
-        public override void TryEatFood(Player player, FoodList foodList)
+        public override void TryEatFood(Player player, List<Food> foodList)
         {
             base.TryEatFood(player, foodList);
         }
-        public override void MoveToFood(Player player, FoodList foodList, float time, List<Player> botlist)
+        public override void MoveToFood(Player player, List<Food> foodList, float time, List<Player> botlist)
         {
             base.MoveToFood(player, foodList, time, botlist);
         }

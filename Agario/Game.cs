@@ -16,7 +16,6 @@ namespace Agario
             public bool IsGameEnded() => isGameEnded;
             public static void GameEnded(bool s) => isGameEnded = s;
 
-            private FoodList food = new FoodList();
             private DrawableObjects drawableObjects = new DrawableObjects();
             private UpdatableObjects updatableObjects = new UpdatableObjects();
             private Clock clock = new Clock();
@@ -28,17 +27,15 @@ namespace Agario
             public void GameCycle()
             {
                 Init();
-                while (window.IsOpen && !updatableObjects.GetPlayer().IsEaten())
+                while (window.IsOpen /*&& !updatableObjects.GetPlayer().IsEaten()*/)
                 {
-                    DoCycleStep();
+                 DoCycleStep();
                 }
             }
             private void Init()
             {
                 WindowSetup();
-               // player.Init();
-               //player.SetIsPlayer(true);
-                InitializeLists();
+                Initialize();
             }
             private void DoCycleStep()
             {
@@ -53,15 +50,14 @@ namespace Agario
                {
                  time = clock.ElapsedTime.AsMicroseconds();
                  clock.Restart();
-                 time /= 800;                                              //for smoother movement of ball
+                 time /= 800;                                              
 
                  window.Clear(Color.White);
                  window.DispatchEvents();
 
-               //  player.Update(direction, updatableObjects.GetBots(), food, (float)time);
-                 updatableObjects.Update(direction, food, updatableObjects.GetBots(), (float)time);
+                 updatableObjects.Update(direction, updatableObjects.GetFood(), updatableObjects.GetBots(), (float)time);
 
-                 updatableObjects.RemoveCachedBots();
+                 Fabric.Instance.RemoveCachedObjectsAndCreateNew(updatableObjects, drawableObjects);
 
                  drawableObjects.Draw(window);
                  window.Display();
@@ -73,14 +69,11 @@ namespace Agario
                 if (e.Code == Keyboard.Key.F)
                     controller.ChangePlayerAndReplaceBots(updatableObjects);
             }
-            private void InitializeLists()
+            private void Initialize()
             {
-               drawableObjects.Init();
-               updatableObjects.Init();
-               food.Init();
-               food.Create(150);
-               updatableObjects.CreateBots(3);
-            updatableObjects.CreatePlayer();
+               Fabric.Instance.CreateFood(updatableObjects, drawableObjects, 150);
+               Fabric.Instance.CreatePlayer(updatableObjects,drawableObjects,true);
+               Fabric.Instance.CreatePlayers(updatableObjects,drawableObjects,false,6);
             }
             private void WindowSetup()
             {
@@ -102,9 +95,6 @@ namespace Agario
             {
                 RenderWindow w = (RenderWindow)sender;
                 WindowUnsubscribe();
-                updatableObjects.Unsubscribe();
-                food.Unsubscribe();
-                drawableObjects.Unsubscribe();
                 w.Close();
             }
         

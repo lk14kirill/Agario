@@ -19,7 +19,7 @@ namespace Agario
         {
             whoIsEating.Eat(whoWasEaten);
             whoWasEaten.SetIsEaten(true);
-            UpdatableObjects.AddToBotsToRemove(whoWasEaten);
+            Fabric.Instance.AddToObjectsToRemove(whoWasEaten);
 
         }
         public virtual void Intersect(Player player, List<Player> bots)
@@ -39,24 +39,24 @@ namespace Agario
                 }
             }
         }
-        public virtual void TryEatFood(Player player, FoodList foodList)
+        public virtual void TryEatFood(Player player, List<Food> foodList)
         {
-            foreach (Food food in foodList.food)
+            foreach (Food food in foodList)
             {
                 if (MathExt.CheckForIntersect(player, food))
                 {
-                    foodList.RemoveFood(food);
+                    Fabric.Instance.AddToObjectsToRemove(food);
                     if (player.GetRadius() < 400)
                         player.Eat(food);
                     return;
                 }
             }
         } 
-        public virtual void MoveToFood(Player player, FoodList foodList, float time,List<Player> bots)
+        public virtual void MoveToFood(Player player, List<Food> foodList, float time,List<Player> bots)
         {
             Food target = new Food();
             float minDistance = 5000;
-            foreach (Food food in foodList.food)
+            foreach (Food food in foodList)
             {
                 float tempDistance = MathExt.VectorLength(player.GetCenter(), food.GetCenter());
                 if (tempDistance < minDistance)

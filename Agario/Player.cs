@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Agario
 {
-    public class Player : CircleObject,IUpdatable 
+    public class Player : CircleObject,IUpdatable,IDrawable
     {
         public int id;
         private bool isEaten;
@@ -50,7 +50,7 @@ namespace Agario
             }
             SetSpeed(8 / (GetRadius() * 1.2f) * speedModifier);
         }
-        public void Update(Vector2f playerDirection,List<Player> bots,FoodList food,float time)
+        public void Update(Vector2f playerDirection,List<Player> bots,List<Food> food,float time)
         {
             if (IsPlayer())
                 MoveToward(playerDirection, time);
@@ -59,6 +59,10 @@ namespace Agario
             Intersect(bots);
             LoseWeightAndChangeSpeed();
             TryEatFood(food);
+        }
+        public Drawable WhatToDraw()
+        {
+            return GetGO();
         }
         public void Intersect(List<Player> bots)
         {
@@ -74,11 +78,11 @@ namespace Agario
             speedModifier = fraction.GetSpeedModifier();
             weightModifier = fraction.GetWeightModifier();
         }
-        public void TryEatFood(FoodList foodlist)
+        public void TryEatFood(List<Food> foodlist)
         {
             fraction.TryEatFood(this, foodlist);
         }
-        public void MoveToFood(FoodList foodlist, float time, List<Player> bots)
+        public void MoveToFood(List<Food> foodlist, float time, List<Player> bots)
         {
             if(!IsPlayer())
             fraction.MoveToFood(this, foodlist, time, bots);

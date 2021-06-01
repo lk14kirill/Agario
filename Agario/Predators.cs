@@ -10,7 +10,7 @@ namespace Agario
             player.GetGO().OutlineColor = Color.Red;
             player.SetRadius(50);
         }
-        public override void MoveToFood(Player player, FoodList foodList, float time,List<Player> bots)
+        public override void MoveToFood(Player player, List<Food> foodList, float time,List<Player> bots)
         {
             Player target = new Player();
             float minDistance = 5000;
@@ -30,7 +30,7 @@ namespace Agario
             }
             player.MoveToward(target.GetCenter(), time);
         }
-        public override void TryEatFood(Player player, FoodList foodList)
+        public override void TryEatFood(Player player, List<Food> foodList)
         {
 
         }

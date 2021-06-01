@@ -9,7 +9,7 @@ namespace Agario
         {
             player.GetGO().OutlineColor = Color.Blue;
         }
-        public override void TryEatFood(Player player, FoodList foodList)
+        public override void TryEatFood(Player player, List<Food> foodList)
         {
             base.TryEatFood(player, foodList);
         }
@@ -17,7 +17,7 @@ namespace Agario
         {
             return base.GetSpeedModifier();
         }
-        public override void MoveToFood(Player player, FoodList foodList, float time, List<Player> bots)
+        public override void MoveToFood(Player player, List<Food> foodList, float time, List<Player> bots)
         {
             base.MoveToFood(player, foodList, time, bots);
         }
