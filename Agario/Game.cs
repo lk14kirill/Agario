@@ -2,11 +2,9 @@
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
-using System.Collections.Generic;
 
 namespace Agario
 {
-  
     class Game
         {
             private double time;
@@ -19,7 +17,7 @@ namespace Agario
             public static void GameEnded(bool s) => isGameEnded = s;
 
             private FoodList food = new FoodList();
-            private ObjectsToDrawList drawableObjects = new ObjectsToDrawList();
+            private DrawableObjects drawableObjects = new DrawableObjects();
             private UpdatableObjects updatableObjects = new UpdatableObjects();
             private Clock clock = new Clock();
             private Controller controller = new Controller();
@@ -61,7 +59,7 @@ namespace Agario
                  window.DispatchEvents();
 
                //  player.Update(direction, updatableObjects.GetBots(), food, (float)time);
-                 updatableObjects.UpdateBots(direction, food, updatableObjects.GetBots(), (float)time);
+                 updatableObjects.Update(direction, food, updatableObjects.GetBots(), (float)time);
 
                  updatableObjects.RemoveCachedBots();
 

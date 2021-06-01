@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Agario
 {
-    class ObjectsToDrawList
+    class DrawableObjects
     {
-        private List<Drawable> drawableObjects = new List<Drawable>();
+        private static List<Drawable> drawableObjects = new List<Drawable>();
         public void Init()
         {
             Constants.CircleCreated += AddCircle;
@@ -20,9 +20,9 @@ namespace Agario
         {
             drawableObjects.Add(circle.GetGO());
         }
-        public void Remove(CircleObject circle)
+        public void Remove(Drawable drawable)
         {
-            drawableObjects.Remove(circle.GetGO());
+            drawableObjects.Remove(drawable);
         }
         public void Add(Drawable drawable)
         {
@@ -42,6 +42,6 @@ namespace Agario
                 window.Draw(drawableObject);
             }
         }
-        public List<Drawable> GetList() => drawableObjects;
+        public static List<Drawable> GetList() => drawableObjects;
     }
 }
