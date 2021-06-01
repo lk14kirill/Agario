@@ -76,7 +76,7 @@ namespace Agario
             {
                Fabric.Instance.CreateFood(updatableObjects, drawableObjects, 150);
                Fabric.Instance.CreatePlayer(updatableObjects,drawableObjects,true);
-               Fabric.Instance.CreatePlayers(updatableObjects,drawableObjects,false,6);
+               Fabric.Instance.CreatePlayers(updatableObjects,drawableObjects,false,9);
             }
             private void WindowSetup()
             {

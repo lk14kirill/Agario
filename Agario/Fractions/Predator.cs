@@ -10,6 +10,7 @@ namespace Agario
             player.GetGO().OutlineColor = Color.Red;
             player.SetRadius(50);
         }
+        float speedModifier = 1.25f;
         public override void MoveToFood(Player player, List<Food> foodList, float time,List<Player> bots)
         {
             Player target = new Player();
@@ -59,7 +60,7 @@ namespace Agario
         }
         public override float GetSpeedModifier()
         {
-            return base.GetSpeedModifier();
+            return speedModifier;
         }
     }
 }
