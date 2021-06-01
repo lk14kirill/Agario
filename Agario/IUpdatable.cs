@@ -6,7 +6,7 @@ namespace Agario
 {
     public interface IUpdatable
     {
-        void Update(Vector2f playerDirection, List<Player> bots, List<Food> food, float time);
+        void Update(Vector2f playerDirection, List<Player> bots, List<Food> food, float time,Player player);
     }
     public interface IDrawable
     {

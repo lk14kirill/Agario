@@ -3,7 +3,6 @@ using SFML.Graphics;
 using System;
 using System.Collections.Generic;
 
-
 namespace Agario
 {
     public class Player : CircleObject,IUpdatable,IDrawable
@@ -33,13 +32,13 @@ namespace Agario
             switch (rand.Next(1, 4))
             {
                 case 1:
-                    return new Omnivores();
+                    return new Omnivore();
                 case 2:
-                    return new Herbivores();
+                    return new Herbivore();
                 case 3:
-                    return new Predators();
+                    return new Predator();
             }
-            return new Omnivores();
+            return new Omnivore();
         }
 
         public void LoseWeightAndChangeSpeed()
@@ -50,7 +49,7 @@ namespace Agario
             }
             SetSpeed(8 / (GetRadius() * 1.2f) * speedModifier);
         }
-        public void Update(Vector2f playerDirection,List<Player> bots,List<Food> food,float time)
+        public void Update(Vector2f playerDirection,List<Player> bots,List<Food> food,float time,Player player)
         {
             if (IsPlayer())
                 MoveToward(playerDirection, time);
@@ -68,10 +67,7 @@ namespace Agario
         {
             fraction.Intersect(this,bots);
         }
-        public void Eat(CircleObject circle)
-        {
-            SetRadius(GetRadius() + circle.GetRadius() - 4);
-        }
+      
         public void Init()
         {
             fraction.Init(this);

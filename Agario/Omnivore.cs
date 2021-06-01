@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Agario
 {
-    class Omnivores : Fraction
+    class Omnivore : Fraction
     {
         public override void Init(Player player)
         {
@@ -23,7 +23,7 @@ namespace Agario
         }
         public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
-            if (whoIsEating.GetFraction() is Herbivores)
+            if (whoIsEating.GetFraction() is Herbivore)
                 return;
             base.EatAndRemoveBot(whoIsEating, whoWasEaten);
         }

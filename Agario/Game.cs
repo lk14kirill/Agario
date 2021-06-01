@@ -21,7 +21,7 @@ namespace Agario
             private Clock clock = new Clock();
             private Controller controller = new Controller();
             private RenderWindow window = new RenderWindow(new VideoMode(Constants.windowX, Constants.windowY), "Game window");
-            //private Player player = new Player();
+            private PlayerText text = new PlayerText();
 
             private Vector2f direction;
             public void GameCycle()
@@ -35,7 +35,10 @@ namespace Agario
             private void Init()
             {
                 WindowSetup();
-                Initialize();
+                CreateObjects();
+                PlayerText text = new PlayerText();
+                Fabric.Instance.RegisterObject(updatableObjects,drawableObjects,text);
+                text.Initialize(updatableObjects.GetPlayer().GetGO().OutlineColor);
             }
             private void DoCycleStep()
             {
@@ -55,7 +58,7 @@ namespace Agario
                  window.Clear(Color.White);
                  window.DispatchEvents();
 
-                 updatableObjects.Update(direction, updatableObjects.GetFood(), updatableObjects.GetBots(), (float)time);
+                 updatableObjects.Update(direction, updatableObjects.GetFood(), updatableObjects.GetBots(), (float)time,updatableObjects.GetPlayer());
 
                  Fabric.Instance.RemoveCachedObjectsAndCreateNew(updatableObjects, drawableObjects);
 
@@ -69,7 +72,7 @@ namespace Agario
                 if (e.Code == Keyboard.Key.F)
                     controller.ChangePlayerAndReplaceBots(updatableObjects);
             }
-            private void Initialize()
+            private void CreateObjects()
             {
                Fabric.Instance.CreateFood(updatableObjects, drawableObjects, 150);
                Fabric.Instance.CreatePlayer(updatableObjects,drawableObjects,true);

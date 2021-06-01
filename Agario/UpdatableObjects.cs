@@ -62,11 +62,11 @@ namespace Agario
         {
             updatableObjects.Remove(updatable);
         }
-        public void Update(Vector2f direction, List<Food> food, List<Player> bots, float time)
+        public void Update(Vector2f direction, List<Food> food, List<Player> bots, float time,Player player)
         {
             foreach (IUpdatable updatable in updatableObjects)
             {
-                updatable.Update(direction, bots, food, time);
+                updatable.Update(direction, bots, food, time,player);
             }
         }
     }

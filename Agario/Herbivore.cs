@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Agario
 {
-    public class Herbivores : Fraction
+    public class Herbivore : Fraction
     {
         public override void Init(Player player)
         {
@@ -16,13 +16,17 @@ namespace Agario
         {
             base.TryEatFood(player, foodList);
         }
+        public override void Eat(Player player, CircleObject whatToEat)
+        {
+            player.SetRadius(player.GetRadius() + whatToEat.GetRadius() - 3.5f);
+        }
         public override void MoveToFood(Player player, List<Food> foodList, float time, List<Player> botlist)
         {
             base.MoveToFood(player, foodList, time, botlist);
         }
         public override void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
-            if (whoIsEating.GetFraction() is Herbivores)
+            if (whoIsEating.GetFraction() is Herbivore)
                 return;
             base.EatAndRemoveBot(whoIsEating,whoWasEaten);
         }

@@ -13,7 +13,7 @@ namespace Agario
             SetRandomColor();
             SetRadius(5);
         }
-        public void Update(Vector2f direction,List<Player> players,List<Food> food,float time)
+        public void Update(Vector2f direction,List<Player> players,List<Food> food,float time,Player player)
         {
 
         }

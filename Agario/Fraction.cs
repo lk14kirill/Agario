@@ -15,9 +15,10 @@ namespace Agario
         {
 
         } 
+
         public virtual void EatAndRemoveBot(Player whoIsEating, Player whoWasEaten)
         {
-            whoIsEating.Eat(whoWasEaten);
+            Eat(whoIsEating,whoWasEaten);
             whoWasEaten.SetIsEaten(true);
             Fabric.Instance.AddToObjectsToRemove(whoWasEaten);
 
@@ -47,11 +48,15 @@ namespace Agario
                 {
                     Fabric.Instance.AddToObjectsToRemove(food);
                     if (player.GetRadius() < 400)
-                        player.Eat(food);
+                        Eat(player,food);
                     return;
                 }
             }
-        } 
+        }
+        public virtual void Eat(Player player,CircleObject whatToEat)
+        {
+            player.SetRadius(player.GetRadius() + whatToEat.GetRadius() - 4);
+        }
         public virtual void MoveToFood(Player player, List<Food> foodList, float time,List<Player> bots)
         {
             Food target = new Food();
